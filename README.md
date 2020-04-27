@@ -1,2 +1,2 @@
 # stitching
-Helm chart for bdc deployments
+Helm chart for bdc deployments + docker compose (TODO)
