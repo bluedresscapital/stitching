@@ -7,7 +7,7 @@ replicaCount: 1
 web:
   image: 
     repository: jasonm2/bdc_sequins
-    tag: arm64-v1.0.1
+    tag: arm64-v1.0.3
     pullPolicy: IfNotPresent
 
 image:
