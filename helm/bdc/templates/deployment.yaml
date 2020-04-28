@@ -104,6 +104,20 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           command:
             - ./main
+            - "-pg-host"
+            - "bdc-postgresql"
+            - "-pg-pwd"
+            - "bdc"
+
+            #- /bin/sh
+              #- "-c"
+              #- |
+              #set +x;
+              #while true;
+              #do
+              #sleep 1
+                #done
+
 
       {{- with .Values.nodeSelector }}
       nodeSelector:

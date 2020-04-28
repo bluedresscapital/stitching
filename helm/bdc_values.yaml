@@ -1,0 +1,12 @@
+postgresql:
+  postgresqlPassword: bdc
+  postgresqlDatabase: wardrobe
+  image:
+    repository: arm64v8/postgres
+    tag: 9.5
+  securityContext:
+    enabled: false
+  global:
+    storageClass: local-path
+  persistence:
+    storageClass: local-path

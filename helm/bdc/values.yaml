@@ -17,7 +17,7 @@ backend:
   replicaCount: 1
   image:
     repository: jasonm2/bdc_coattails
-    tag: arm64-v1.0.2
+    tag: arm64-v1.0.4
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
