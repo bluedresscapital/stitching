@@ -8,6 +8,10 @@ web:
     repository: jasonm2/bdc_sequins
     tag: arm64-v1.0.3
     pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 38000
+
 
 backend:
   replicaCount: 1
@@ -15,6 +19,9 @@ backend:
     repository: jasonm2/bdc_coattails
     tag: arm64-v1.0.2
     pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 38001
 
 imagePullSecrets: []
 nameOverride: ""
@@ -40,9 +47,7 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-service:
-  type: NodePort
-  port: 38000
+
 
 ingress:
   enabled: false

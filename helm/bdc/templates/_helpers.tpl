@@ -36,7 +36,8 @@ Common labels
 */}}
 {{- define "bdc.labels" -}}
 helm.sh/chart: {{ include "bdc.chart" . }}
-{{ include "bdc.selectorLabels" . }}
+{{ include "bdc.web.selectorLabels" . }}
+{{ include "bdc.backend.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,9 +47,14 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "bdc.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "bdc.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+{{- define "bdc.web.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "bdc.name" . }}-web
+app.kubernetes.io/instance: {{ .Release.Name }}-web
+{{- end -}}
+
+{{- define "bdc.backend.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "bdc.name" . }}-backend
+app.kubernetes.io/instance: {{ .Release.Name }}-backend
 {{- end -}}
 
 {{/*
