@@ -6,10 +6,10 @@ web:
   replicaCount: 1
   image: 
     repository: jasonm2/bdc_sequins
-    tag: arm64-v1.0.3
+    tag: arm64-v1.0.6
     pullPolicy: IfNotPresent
   service:
-    type: ClusterIP
+    type: NodePort
     port: 38000
 
 
@@ -17,7 +17,7 @@ backend:
   replicaCount: 1
   image:
     repository: jasonm2/bdc_coattails
-    tag: arm64-v1.0.4
+    tag: arm64-v1.0.6
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP

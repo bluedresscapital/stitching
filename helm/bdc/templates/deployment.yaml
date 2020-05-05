@@ -41,6 +41,9 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: COATTAILS_HOSTNAME
+              value: http://{{ include "bdc.fullname" . }}-backend:38001
           command:
             - nginx
             - "-g"
@@ -94,11 +97,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /health
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /health
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -108,6 +111,8 @@ spec:
             - "bdc-postgresql"
             - "-pg-pwd"
             - "bdc"
+            - "-redis-host"
+            - "bdc-redis-master"
 
             #- /bin/sh
               #- "-c"
