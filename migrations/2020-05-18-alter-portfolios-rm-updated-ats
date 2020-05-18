@@ -1,0 +1,14 @@
+ALTER TABLE portfolios DROP COLUMN orders_updated_at;
+ALTER TABLE portfolios DROP COLUMN transfers_updated_at;
+
+DROP TRIGGER set_timestamp_orders ON orders;
+ALTER TABLE orders DROP COLUMN created_at;
+ALTER TABLE orders DROP COLUMN updated_at;
+ALTER TABLE orders ADD COLUMN committed boolean NOT NULL DEFAULT false;
+ALTER TABLE orders ALTER COLUMN committed DROP DEFAULT;
+
+DROP TRIGGER set_timestamp_transfers ON transfers;
+ALTER TABLE transfers DROP COLUMN created_at;
+ALTER TABLE transfers DROP COLUMN updated_at;
+ALTER TABLE transfers ADD COLUMN committed boolean NOT NULL DEFAULT false;
+ALTER TABLE transfers ALTER COLUMN committed DROP DEFAULT;
