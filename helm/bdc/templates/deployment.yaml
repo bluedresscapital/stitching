@@ -48,7 +48,42 @@ spec:
             - nginx
             - "-g"
             - "daemon off;"
-
+      #   - name: tunnel
+      #     image: joshma/cloudflared:latest
+      #     imagePullPolicy: Always
+      #     command:
+      #       - "/opt/cloudflared"
+      #       - "tunnel"
+      #     args:
+      #     - --url=http://127.0.0.1:8000
+      #     - --hostname=bluedresscapital.mgb.dog
+      #     - --origincert=/etc/cloudflared/cert.pem
+      #     - --no-autoupdate
+      #     env:
+      #     - name: POD_NAME
+      #       valueFrom:
+      #         fieldRef:
+      #           fieldPath: metadata.name
+      #     - name: POD_NAMESPACE
+      #       valueFrom:
+      #         fieldRef:
+      #           fieldPath: metadata.namespace
+      #     resources:
+      #       limits:
+      #         cpu: 50m
+      #         memory: 20Mi
+      #       requests:
+      #         cpu: 50m
+      #         memory: 20Mi
+      #     volumeMounts:
+      #     - mountPath: /etc/cloudflared
+      #       name: tunnel-secret
+      #       readOnly: true
+      # terminationGracePeriodSeconds: 60
+      # volumes:
+      # - name: tunnel-secret
+      #   secret:
+      #     secretName: mgb.dog
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -113,15 +148,42 @@ spec:
             - "bdc"
             - "-redis-host"
             - "bdc-redis-master"
-
-            #- /bin/sh
-              #- "-c"
-              #- |
-              #set +x;
-              #while true;
-              #do
-              #sleep 1
-                #done
+      #   - name: tunnel
+      #     image: joshma/cloudflared:latest
+      #     imagePullPolicy: Always
+      #     command:
+      #       - "/opt/cloudflared"
+      #       - "tunnel"
+      #     args:
+      #     - --url=http://127.0.0.1:8080
+      #     - --hostname=api-bluedresscapital.mgb.dog
+      #     - --origincert=/etc/cloudflared/cert.pem
+      #     - --no-autoupdate
+      #     env:
+      #     - name: POD_NAME
+      #       valueFrom:
+      #         fieldRef:
+      #           fieldPath: metadata.name
+      #     - name: POD_NAMESPACE
+      #       valueFrom:
+      #         fieldRef:
+      #           fieldPath: metadata.namespace
+      #     resources:
+      #       limits:
+      #         cpu: 50m
+      #         memory: 20Mi
+      #       requests:
+      #         cpu: 50m
+      #         memory: 20Mi
+      #     volumeMounts:
+      #     - mountPath: /etc/cloudflared
+      #       name: tunnel-secret
+      #       readOnly: true
+      # terminationGracePeriodSeconds: 60
+      # volumes:
+      # - name: tunnel-secret
+      #   secret:
+      #     secretName: mgb.dog
 
 
       {{- with .Values.nodeSelector }}
