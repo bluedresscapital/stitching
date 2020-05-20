@@ -3,25 +3,33 @@
 # Declare variables to be passed into your templates.
 
 web:
-  replicaCount: 3
+  replicaCount: 1
   image: 
     repository: jasonm2/bdc_sequins
-    tag: arm64-v1.1.1
+    tag: arm64-v1.1.3
     pullPolicy: IfNotPresent
   service:
     type: NodePort
     port: 38000
+  resources: {}
 
 
 backend:
-  replicaCount: 3
+  replicaCount: 1
   image:
     repository: jasonm2/bdc_coattails
-    tag: arm64-v1.1.2
+    tag: arm64-v1.1.14
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
     port: 38001
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
 
 imagePullSecrets: []
 nameOverride: ""

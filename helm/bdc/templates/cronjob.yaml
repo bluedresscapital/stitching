@@ -1,0 +1,81 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "bdc.fullname" . }}-backend-cron
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: {{ .Chart.Name }}-backend-cron
+              image: "{{ .Values.backend.image.repository}}:{{ .Values.backend.image.tag}}"
+              args:
+                - ./coattails-reload
+                - "-pg-host"
+                - "bdc-postgresql"
+                - "-pg-pwd"
+                - "bdc"
+                - "-redis-host"
+                - "bdc-redis-master"
+                - "-load-bdc-key-from-file"
+                - "-bdc-key-file"
+                - "/etc/bdc-key/value"
+              resources:
+                limits:
+                  cpu: "100m"
+                  memory: "100Mi"
+                requests:
+                  cpu: "100m"
+                  memory: "100Mi"
+              volumeMounts:
+                - name: bdc-key-vol
+                  mountPath: "/etc/bdc-key"
+                  readOnly: true
+          restartPolicy: Never
+          volumes:
+            - name: bdc-key-vol
+              secret:
+                secretName: bdc-key
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "bdc.fullname" . }}-stock-cron
+spec:
+  schedule: "*/1 13-21 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: {{ .Chart.Name }}-stock-cron
+              image: "{{ .Values.backend.image.repository}}:{{ .Values.backend.image.tag}}"
+              args:
+                - ./stock-reload
+                - "-pg-host"
+                - "bdc-postgresql"
+                - "-pg-pwd"
+                - "bdc"
+                - "-redis-host"
+                - "bdc-redis-master"
+                - "-load-bdc-key-from-file"
+                - "-bdc-key-file"
+                - "/etc/bdc-key/value"
+              resources:
+                limits:
+                  cpu: "100m"
+                  memory: "100Mi"
+                requests:
+                  cpu: "100m"
+                  memory: "100Mi"
+              volumeMounts:
+                - name: bdc-key-vol
+                  mountPath: "/etc/bdc-key"
+                  readOnly: true
+          restartPolicy: Never
+          volumes:
+            - name: bdc-key-vol
+              secret:
+                secretName: bdc-key
