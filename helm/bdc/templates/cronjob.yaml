@@ -38,13 +38,14 @@ spec:
             - name: bdc-key-vol
               secret:
                 secretName: bdc-key
+      backoffLimit: 0
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: {{ include "bdc.fullname" . }}-stock-cron
 spec:
-  schedule: "*/1 13-21 * * *"
+  schedule: "*/1 13-21 * * 1-5"
   jobTemplate:
     spec:
       template:
@@ -79,3 +80,46 @@ spec:
             - name: bdc-key-vol
               secret:
                 secretName: bdc-key
+      backoffLimit: 1
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "bdc.fullname" . }}-daily-cleanup-cron
+spec:
+  schedule: "0 13 * * 1-5"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: {{ .Chart.Name }}-daily-cleanup-cron
+              image: "{{ .Values.backend.image.repository}}:{{ .Values.backend.image.tag}}"
+              args:
+                - ./daily-coattails-reload
+                - "-pg-host"
+                - "bdc-postgresql"
+                - "-pg-pwd"
+                - "bdc"
+                - "-redis-host"
+                - "bdc-redis-master"
+                - "-load-bdc-key-from-file"
+                - "-bdc-key-file"
+                - "/etc/bdc-key/value"
+              resources:
+                limits:
+                  cpu: "100m"
+                  memory: "100Mi"
+                requests:
+                  cpu: "100m"
+                  memory: "100Mi"
+              volumeMounts:
+                - name: bdc-key-vol
+                  mountPath: "/etc/bdc-key"
+                  readOnly: true
+          restartPolicy: Never
+          volumes:
+            - name: bdc-key-vol
+              secret:
+                secretName: bdc-key
+      backoffLimit: 1
